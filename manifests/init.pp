@@ -17,7 +17,7 @@ class lsys_postgresql (
   Boolean $manage_dnf_module = true,
   Boolean $manage_package_repo = $lsys_postgresql::params::postgres_manage_repo,
   # https://www.postgresql.org/support/versioning/
-  Bsys::PGVersion $package_version = $lsys_postgresql::params::postgres_version,
+  Optional[Bsys::PGVersion] $package_version = $lsys_postgresql::params::postgres_version,
   String $ip_mask_allow_all_users = '0.0.0.0/0',
   String $listen_addresses = 'localhost',
   Variant[Integer, Pattern[/^[0-9]+$/]] $database_port = 5432,
@@ -26,15 +26,20 @@ class lsys_postgresql (
   include bsys::params
   include bsys::repo
 
-  $version_data = split($package_version, '[.]')
-  $major_version = $version_data[0]
-  $minor_version = $version_data[1]
+  if $package_version {
+    $version_data = split($package_version, '[.]')
+    $major_version = $version_data[0]
+    $minor_version = $version_data[1]
 
-  $repo_version = $major_version ? {
-    '9' => $minor_version ? {
-      default => "9.${minor_version}",
-    },
-    default => $major_version,
+    $repo_version = $major_version ? {
+      '9' => $minor_version ? {
+        default => "9.${minor_version}",
+      },
+      default => $major_version,
+    }
+  }
+  else {
+    $repo_version = undef
   }
 
   # we can not use maintainer's repo on CentOS 8+ due to issue:

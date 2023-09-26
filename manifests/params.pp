@@ -27,13 +27,16 @@ class lsys_postgresql::params {
         $postgres_manage_repo = false
       }
       else {
-        $postgres_version = '15.4'
+        $postgres_version = '16.0'
         $postgres_manage_repo = true
       }
     }
-    # e.g. Ubuntu/Debian etc
+    'Ubuntu': {
+      $postgres_version = "16.0-1.pgdg${osmaj}+1"
+      $postgres_manage_repo = true
+    }
     default: {
-      $postgres_version = '15.4'
+      $postgres_version = undef
       $postgres_manage_repo = true
     }
   }
