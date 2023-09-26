@@ -1,0 +1,50 @@
+{
+  "name": "aursu-lsys_postgresql",
+  "version": "0.46.0",
+  "author": "aursu",
+  "summary": "PostgreSQL installation",
+  "license": "Apache-2.0",
+  "source": "https://github.com/aursu/puppet-lsys_postgresql.git",
+  "project_page": "https://github.com/aursu/puppet-lsys_postgresql",
+  "issues_url": "https://github.com/aursu/puppet-lsys_postgresql/issues",
+  "dependencies": [
+    {
+      "name": "puppetlabs/postgresql",
+      "version_requirement": ">= 8.3.0 < 10.0.0"
+    },
+    {
+      "name": "aursu/bsys",
+      "version_requirement": ">= 0.1.0 < 1.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "Rocky",
+      "operatingsystemrelease": [
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "20.04",
+        "22.04"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 5.5.0 < 9.0.0"
+    }
+  ],
+  "pdk-version": "3.0.0",
+  "template-url": "pdk-default#3.0.0",
+  "template-ref": "tags/3.0.0-0-g056e50d"
+}
