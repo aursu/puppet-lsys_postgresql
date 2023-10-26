@@ -13,15 +13,15 @@ class lsys_postgresql::params {
   case $osname {
     'CentOS': {
       if $osmaj == '7' {
+        $postgres_version = '15.4'
+        $postgres_manage_repo = true
+      }
+      elsif $bsys::params::centos_stream {
         $postgres_version = $osmaj ? {
           '8'     => '15.0',
           default => '15.2',
         }
         $postgres_manage_repo = false
-      }
-      elsif $bsys::params::centos_stream {
-        $postgres_version = '15.4'
-        $postgres_manage_repo = true
       }
       else {
         $postgres_version = '16.0'
