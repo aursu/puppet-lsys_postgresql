@@ -68,6 +68,8 @@ class lsys_postgresql (
   case $bsys::params::osfam {
     'RedHat': {
       if $manage_package_repo {
+        include bsys::repo::epel
+
         if $repo_sslverify {
           Yumrepo <| title == 'yum.postgresql.org' |> {
             sslverify => $repo_sslverify,
@@ -82,6 +84,14 @@ class lsys_postgresql (
           default: mode => '0600';
           '/etc/yum.repos.d/yum.postgresql.org.repo': ;
           '/etc/yum.repos.d/pgdg-common.repo': ;
+        }
+
+        if $bsys::params::osmaj == '7' {
+          package { 'libzstd':
+            ensure  => 'installed',
+            require => Class['bsys::repo::epel'],
+            before  => Class['postgresql::server'],
+          }
         }
 
         Class['postgresql::repo::yum_postgresql_org'] ~> Class['bsys::repo']

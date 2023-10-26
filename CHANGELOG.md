@@ -23,3 +23,13 @@ All notable changes to this project will be documented in this file.
 * CentOS 7: upstream package is 15
 
 **Known Issues**
+
+## Release 0.49.0
+
+**Features**
+
+* Added `libzstd` dependency for CentOS 7
+
+**Bugfixes**
+
+**Known Issues**
