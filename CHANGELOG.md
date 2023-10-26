@@ -13,3 +13,14 @@ All notable changes to this project will be documented in this file.
 **Bugfixes**
 
 **Known Issues**
+
+## Release 0.48.0
+
+**Features**
+
+**Bugfixes**
+
+* CentOS 7: upstream package is 15
+
+**Known Issues**
+
