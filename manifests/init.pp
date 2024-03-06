@@ -56,12 +56,14 @@ class lsys_postgresql (
       manage_package_repo => $manage_package_repo,
       manage_dnf_module   => true,
       version             => $repo_version,
+      service_provider    => 'systemd',
     }
   }
   else {
     class { 'postgresql::globals':
       manage_package_repo => $manage_package_repo,
       version             => $repo_version,
+      service_provider    => 'systemd',
     }
   }
 
