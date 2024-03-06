@@ -13,30 +13,20 @@ class lsys_postgresql::params {
   case $osname {
     'CentOS': {
       if $osmaj == '7' {
-        $postgres_version = '15.4'
+        $postgres_version = '15.6'
         $postgres_manage_repo = true
-      }
-      elsif $bsys::params::centos_stream {
-        $postgres_version = $osmaj ? {
-          '8'     => '15.0',
-          default => '15.2',
-        }
-        $postgres_manage_repo = false
       }
       else {
-        $postgres_version = '16.0'
-        $postgres_manage_repo = true
+        $postgres_version = '16.1'
+        $postgres_manage_repo = false
       }
     }
     'Rocky': {
-      $postgres_version = $osmaj ? {
-        '8'     => '15.2',
-        default => '15.3',
-      }
+      $postgres_version = '15.6'
       $postgres_manage_repo = false
     }
     'Ubuntu': {
-      $postgres_version = "16.0-1.pgdg${osmaj}+1"
+      $postgres_version = "16.2-1.pgdg${osmaj}+1"
       $postgres_manage_repo = true
     }
     default: {
