@@ -1,6 +1,11 @@
 ARG os=jammy-20230816
 FROM ubuntu:${os}
 
+ARG codename=jammy
+ARG platform=puppet8
+
+ENV PATH=/opt/puppetlabs/puppet/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
 RUN apt-get update && apt-get install -y \
         g++ \
         git \
@@ -9,7 +14,24 @@ RUN apt-get update && apt-get install -y \
         ruby ruby-dev \
     && rm -rf /var/lib/apt/lists/*
 
-RUN wget https://apt.puppet.com/puppet7-release-jammy.deb && dpkg -i puppet7-release-jammy.deb \
+RUN wget https://apt.puppet.com/${platform}-release-${codename}.deb && dpkg -i ${platform}-release-${codename}.deb \
     && apt-get update && apt-get install -y \
-        puppet-agent \
+        puppet-bolt \
+        openssh-server \
     && rm -rf /var/lib/apt/lists/*
+
+COPY tests/ubuntu/sshd/sshd_config /etc/ssh/sshd_config
+COPY --chmod=600 tests/redhat/sshd/ssh_host_ed25519_key /etc/ssh/ssh_host_ed25519_key
+COPY --chmod=640 tests/redhat/sshd/known_hosts /root/.ssh/known_hosts
+
+RUN ssh-keygen -f /root/.ssh/id_rsa -N '' <<<y \
+    && cp -a .ssh/id_rsa.pub .ssh/authorized_keys
+
+RUN echo 'export PATH=/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:$PATH' >> ~/.bashrc
+
+RUN mkdir -p /var/tmp && chmod 1777 /var/tmp
+
+COPY . /root/puppet/lsys_postgresql
+WORKDIR /root/puppet/lsys_postgresql/tests/bolt
+
+CMD ["/usr/sbin/sshd", "-D"]

@@ -1,0 +1,10 @@
+---
+name: postgres_bootstrap
+analytics: false
+modules:
+- name: aursu-lsys_postgresql
+  version_requirement: "=0.50.0"
+- name: puppetlabs-postgresql
+  version_requirement: "=9.2.0"
+- name: aursu-bsys
+  version_requirement: "=0.6.3"
