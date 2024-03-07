@@ -72,6 +72,15 @@ class lsys_postgresql (
       if $manage_package_repo {
         include bsys::repo::epel
 
+        include postgresql::repo::yum_postgresql_org
+        $gpg_key_path = $postgresql::repo::yum_postgresql_org::gpg_key_path
+
+        if $bsys::params::osmaj == '7' {
+          File <| title == $gpg_key_path |> {
+            content => file('lsys_postgresql/PGDG-RPM-GPG-KEY-RHEL7'),
+          }
+        }
+
         if $repo_sslverify {
           Yumrepo <| title == 'yum.postgresql.org' |> {
             sslverify => $repo_sslverify,

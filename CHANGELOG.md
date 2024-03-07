@@ -46,3 +46,13 @@ All notable changes to this project will be documented in this file.
 * Set `service_provider` to `systemd`
 
 **Known Issues**
+
+## Release 0.50.1
+
+**Features**
+
+**Bugfixes**
+
+* Updated GPG keys for RHEL 7
+
+**Known Issues**
