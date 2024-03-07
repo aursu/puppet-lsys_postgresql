@@ -42,3 +42,6 @@
 /.sync.yml
 /.devcontainer/
 /tests/
+/.dockerignore
+/.env
+/docker-compose.yml
