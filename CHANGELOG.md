@@ -33,3 +33,16 @@ All notable changes to this project will be documented in this file.
 **Bugfixes**
 
 **Known Issues**
+
+## Release 0.50.0
+
+**Features**
+
+* Updated PostgreSQL versions to the latest releases for different OSes
+* Updated Puppet modules in fixtures
+
+**Bugfixes**
+
+* Set `service_provider` to `systemd`
+
+**Known Issues**
