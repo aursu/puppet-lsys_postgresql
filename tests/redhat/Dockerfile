@@ -29,8 +29,8 @@ COPY tests/redhat/sshd/sshd_config /etc/ssh/sshd_config
 COPY --chmod=600 tests/redhat/sshd/ssh_host_ed25519_key /etc/ssh/ssh_host_ed25519_key
 COPY --chmod=640 tests/redhat/sshd/known_hosts /root/.ssh/known_hosts
 
-RUN ssh-keygen -f /root/.ssh/id_rsa -N '' <<<y \
-    && cp -a .ssh/id_rsa.pub .ssh/authorized_keys
+RUN ssh-keygen -t ed25519 -f /root/.ssh/id_ed25519 -N '' <<<y \
+    && cp -a .ssh/id_ed25519.pub .ssh/authorized_keys
 
 RUN cp /etc/skel/.bash_profile /etc/skel/.bashrc ~/ \
     && echo 'export PATH=/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:$PATH' >> ~/.bashrc

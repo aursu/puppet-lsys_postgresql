@@ -39,7 +39,6 @@ services:
       dockerfile: tests/redhat/Dockerfile
       args:
         os: $OS9
-        platform: puppet8
     privileged: true
     cap_add:
       - SYS_ADMIN
