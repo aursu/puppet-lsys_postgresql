@@ -5,6 +5,7 @@ ARG codename=jammy
 ARG platform=puppet8
 
 ENV PATH=/opt/puppetlabs/puppet/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV LANG=C
 
 RUN apt-get update && apt-get install -y \
         g++ \
@@ -30,6 +31,7 @@ RUN bash -c "ssh-keygen -t ed25519 -f /root/.ssh/id_ed25519 -N '' <<<y" \
     && cp -a .ssh/id_ed25519.pub .ssh/authorized_keys
 
 RUN echo 'export PATH=/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:$PATH' >> ~/.bashrc
+RUN echo 'export LANG=C' >> ~/.bashrc
 
 RUN mkdir -p /var/tmp && chmod 1777 /var/tmp
 
