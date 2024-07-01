@@ -10,7 +10,7 @@ describe 'lsys_postgresql' do
       it { is_expected.to compile.with_all_deps }
 
       case os
-      when %r{^centos-8}
+      when %r{^centos-8}, %r{^rocky}
         it {
           is_expected.to contain_package('postgresql-server')
             .with_ensure('16.1')
@@ -25,7 +25,7 @@ describe 'lsys_postgresql' do
 
         it {
           is_expected.to contain_package('postgresql-server')
-            .with_ensure('15.6')
+            .with_ensure('15.7')
             .with_name('postgresql15-server')
         }
 
@@ -38,12 +38,6 @@ describe 'lsys_postgresql' do
         it {
           is_expected.to contain_file('/etc/pki/rpm-gpg/RPM-GPG-KEY-PGDG-15')
             .with_content(%r{mQGNBGWBsHEBDACzg9nBu9GXrquREAEVTObf6k3YIWagkv1qlX61dqQpyx8XT36A})
-        }
-      when %r{^rocky}
-        it {
-          is_expected.to contain_package('postgresql-server')
-            .with_ensure('15.6')
-            .with_name('postgresql-server')
         }
       else
         it {

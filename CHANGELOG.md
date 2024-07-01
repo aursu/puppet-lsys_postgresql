@@ -56,3 +56,13 @@ All notable changes to this project will be documented in this file.
 * Updated GPG keys for RHEL 7
 
 **Known Issues**
+
+## Release 0.50.2
+
+**Features**
+
+**Bugfixes**
+
+* Updated PostgreSQL versions to the latest releases for different OSes
+
+**Known Issues**
