@@ -67,7 +67,7 @@ All notable changes to this project will be documented in this file.
 
 **Known Issues**
 
-## Release 0.50.3
+## Release 0.50.4
 
 **Features**
 
