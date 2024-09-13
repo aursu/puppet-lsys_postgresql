@@ -1,21 +1,4 @@
-version: "3"
 services:
-  centos7puppet8bolt:
-    build:
-      context: .
-      dockerfile: tests/redhat/Dockerfile.EL7
-      args:
-        os: $OS7
-        osmajor: 7
-        platform: puppet8
-    privileged: true
-    cap_add:
-      - SYS_ADMIN
-    tmpfs:
-      - /run
-      - /tmp
-    user: root
-    image: "aursu/centos:${OS7TAG}-puppet8-bolt"
   rocky8puppet8bolt:
     build:
       context: .
@@ -33,6 +16,23 @@ services:
       - /tmp
     user: root
     image: "aursu/rockylinux:${RL8TAG}-puppet8-bolt"
+  rocky9puppet8bolt:
+    build:
+      context: .
+      dockerfile: tests/redhat/Dockerfile
+      args:
+        osrepo: aursu/rockylinux
+        os: $RL9
+        osmajor: 9
+        platform: puppet8
+    privileged: true
+    cap_add:
+      - SYS_ADMIN
+    tmpfs:
+      - /run
+      - /tmp
+    user: root
+    image: "aursu/rockylinux:${RL9TAG}-puppet8-bolt"
   stream9puppet8bolt:
     build:
       context: .
