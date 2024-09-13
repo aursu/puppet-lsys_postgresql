@@ -66,3 +66,13 @@ All notable changes to this project will be documented in this file.
 * Updated PostgreSQL versions to the latest releases for different OSes
 
 **Known Issues**
+
+## Release 0.50.3
+
+**Features**
+
+**Bugfixes**
+
+* Updated PostgreSQL version to 16.4 for CentOS and Rocky Linux
+
+**Known Issues**

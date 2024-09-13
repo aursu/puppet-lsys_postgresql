@@ -7,4 +7,4 @@ modules:
 - name: puppetlabs-postgresql
   version_requirement: "=9.2.0"
 - name: aursu-bsys
-  version_requirement: "=0.7.1"
+  version_requirement: "=0.7.2"

@@ -1,6 +1,6 @@
 {
   "name": "aursu-lsys_postgresql",
-  "version": "0.50.2",
+  "version": "0.50.3",
   "author": "aursu",
   "summary": "PostgreSQL installation",
   "license": "Apache-2.0",
@@ -14,7 +14,7 @@
     },
     {
       "name": "aursu/bsys",
-      "version_requirement": ">= 0.7.1 < 1.0.0"
+      "version_requirement": ">= 0.7.2 < 1.0.0"
     }
   ],
   "operatingsystem_support": [

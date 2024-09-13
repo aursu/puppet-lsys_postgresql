@@ -13,7 +13,7 @@ describe 'lsys_postgresql' do
       when %r{^centos-8}, %r{^rocky}
         it {
           is_expected.to contain_package('postgresql-server')
-            .with_ensure('16.1')
+            .with_ensure('16.4')
             .with_name('postgresql-server')
         }
       when %r{^centos-7}
