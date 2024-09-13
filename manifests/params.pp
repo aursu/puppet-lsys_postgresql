@@ -17,12 +17,12 @@ class lsys_postgresql::params {
         $postgres_manage_repo = true
       }
       else {
-        $postgres_version = '16.1'
+        $postgres_version = '16.4'
         $postgres_manage_repo = false
       }
     }
     'Rocky': {
-      $postgres_version = '16.1'
+      $postgres_version = '16.4'
       $postgres_manage_repo = false
     }
     'Ubuntu': {
