@@ -38,4 +38,7 @@ RUN mkdir -p /var/tmp && chmod 1777 /var/tmp
 COPY . /root/puppet/lsys_postgresql
 WORKDIR /root/puppet/lsys_postgresql/tests/bolt
 
+# Setup Puppet Bolt modules
+RUN bolt module install --force
+
 CMD ["/usr/sbin/init"]
