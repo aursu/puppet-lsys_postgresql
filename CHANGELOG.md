@@ -67,12 +67,13 @@ All notable changes to this project will be documented in this file.
 
 **Known Issues**
 
-## Release 0.50.4
+## Release 0.50.5
 
 **Features**
 
 **Bugfixes**
 
 * Updated PostgreSQL version to 16.4 for CentOS and Rocky Linux
+* Updated PostgreSQL version to 15.8 for CentOS 7
 
 **Known Issues**
