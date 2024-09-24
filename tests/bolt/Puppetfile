@@ -7,7 +7,7 @@ moduledir '.modules'
 mod 'puppetlabs/postgresql', '9.2.0'
 mod 'lsys_postgresql',
   git: 'https://github.com/aursu/puppet-lsys_postgresql.git',
-  ref: 'c93dedfd8ed325ab80063e7e82d0e32ddf8e7f8e'
+  ref: 'f62d39bae09d8d6682740fe2956898a2837e8aa8'
 mod 'puppetlabs/stdlib', '9.4.1'
 mod 'puppetlabs/apt', '9.4.0'
 mod 'puppet/systemd', '5.2.0'
