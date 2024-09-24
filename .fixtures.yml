@@ -11,7 +11,7 @@ fixtures:
       ref: 9.0.2
     postgresql:
       repo: puppetlabs/postgresql
-      ref: 9.2.0
+      ref: 10.3.0
     stdlib:
       repo: puppetlabs/stdlib
       ref: 9.4.1

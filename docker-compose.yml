@@ -33,6 +33,23 @@ services:
       - /tmp
     user: root
     image: "aursu/rockylinux:${RL9TAG}-puppet8-bolt"
+  rocky9puppet7bolt:
+    build:
+      context: .
+      dockerfile: tests/redhat/Dockerfile
+      args:
+        osrepo: aursu/rockylinux
+        os: $RL9
+        osmajor: 9
+        platform: puppet7
+    privileged: true
+    cap_add:
+      - SYS_ADMIN
+    tmpfs:
+      - /run
+      - /tmp
+    user: root
+    image: "aursu/rockylinux:${RL9TAG}-puppet7-bolt"
   stream9puppet8bolt:
     build:
       context: .

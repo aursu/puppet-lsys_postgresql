@@ -3,8 +3,8 @@ name: postgres_bootstrap
 analytics: false
 modules:
 - git: https://github.com/aursu/puppet-lsys_postgresql.git
-  ref: v0.50.2
+  ref: v0.50.4
 - name: puppetlabs-postgresql
-  version_requirement: "=9.2.0"
+  version_requirement: "=10.3.0"
 - name: aursu-bsys
   version_requirement: "=0.7.2"
