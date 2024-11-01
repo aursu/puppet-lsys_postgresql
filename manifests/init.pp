@@ -13,13 +13,26 @@
 #   '192.168.0.0/1' to allow connections from any machine on your local '192.168'
 #   subnet. Default value: '127.0.0.1/32'.
 #
+# listen_addresses (string)
+#   Specifies the TCP/IP address(es) on which the server is to listen for connections
+#   from client applications. The value takes the form of a comma-separated list
+#   of host names and/or numeric IP addresses. The special entry * corresponds
+#   to all available IP interfaces. The entry 0.0.0.0 allows listening for all
+#   IPv4 addresses and :: allows listening for all IPv6 addresses. If the list
+#   is empty, the server does not listen on any IP interface at all, in which case
+#   only Unix-domain sockets can be used to connect to it. If the list is not empty,
+#   the server will start if it can listen on at least one TCP/IP address. A warning
+#   will be emitted for any TCP/IP address which cannot be opened. The default
+#   value is localhost, which allows only local TCP/IP “loopback” connections to
+#   be made.
+#
 class lsys_postgresql (
   Boolean $manage_dnf_module = true,
   Boolean $manage_package_repo = $lsys_postgresql::params::postgres_manage_repo,
   # https://www.postgresql.org/support/versioning/
   Optional[Bsys::PGVersion] $package_version = $lsys_postgresql::params::postgres_version,
   String $ip_mask_allow_all_users = '0.0.0.0/0',
-  String $listen_addresses = 'localhost',
+  Lsys_postgresql::PGListen $listen_addresses = 'localhost',
   Variant[Integer, Pattern[/^[0-9]+$/]] $database_port = 5432,
   Optional[Integer[0,1]] $repo_sslverify = undef,
 ) inherits lsys_postgresql::params {

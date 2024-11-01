@@ -77,3 +77,13 @@ All notable changes to this project will be documented in this file.
 * Updated PostgreSQL version to 15.8 for CentOS 7
 
 **Known Issues**
+
+## Release 0.51.0
+
+**Features**
+
+* Added new type `Lsys_postgresql::PGListen`
+
+**Bugfixes**
+
+**Known Issues**
