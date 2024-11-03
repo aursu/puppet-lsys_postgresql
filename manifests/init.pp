@@ -144,6 +144,7 @@ class lsys_postgresql (
     listen_addresses        => $listen_addresses,
     port                    => $database_port + 0,
   }
+  contain postgresql::server
 
   class { 'postgresql::server::contrib': }
 }

@@ -78,12 +78,17 @@ All notable changes to this project will be documented in this file.
 
 **Known Issues**
 
-## Release 0.51.0
+## Release 0.52.0
 
 **Features**
 
-* Added new type `Lsys_postgresql::PGListen`
+* Added new type `Lsys_postgresql::PGListen` for managing PostgreSQL event listening.
+* Added containment of the `postgresql::server` class within `lsys_postgresql` to ensure all dependencies are correctly applied.
 
 **Bugfixes**
 
+* No bugfixes in this release.
+
 **Known Issues**
+
+* No known issues in this release.
