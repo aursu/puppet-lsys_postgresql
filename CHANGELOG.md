@@ -78,7 +78,7 @@ All notable changes to this project will be documented in this file.
 
 **Known Issues**
 
-## Release 0.52.0
+## Release 0.52.1
 
 **Features**
 
@@ -87,7 +87,7 @@ All notable changes to this project will be documented in this file.
 
 **Bugfixes**
 
-* No bugfixes in this release.
+* Updated PostgreSQL version to 16.6 for Ubuntu
 
 **Known Issues**
 

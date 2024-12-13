@@ -1,6 +1,6 @@
 {
   "name": "aursu-lsys_postgresql",
-  "version": "0.52.0",
+  "version": "0.52.1",
   "author": "aursu",
   "summary": "PostgreSQL installation",
   "license": "Apache-2.0",
@@ -14,7 +14,7 @@
     },
     {
       "name": "aursu/bsys",
-      "version_requirement": ">= 0.10.1 < 1.0.0"
+      "version_requirement": ">= 0.10.3 < 1.0.0"
     },
     {
       "name": "puppetlabs/stdlib",
@@ -33,7 +33,8 @@
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
         "20.04",
-        "22.04"
+        "22.04",
+        "24.04"
       ]
     }
   ],

@@ -26,7 +26,7 @@ class lsys_postgresql::params {
       $postgres_manage_repo = false
     }
     'Ubuntu': {
-      $postgres_version = "16.2-1.pgdg${osmaj}+1"
+      $postgres_version = "16.6-1.pgdg${osmaj}+1"
       $postgres_manage_repo = true
     }
     default: {

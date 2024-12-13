@@ -22,4 +22,4 @@ fixtures:
       repo: puppetlabs/yumrepo_core
     bsys:
       repo: aursu/bsys
-      ref: 0.10.1
+      ref: 0.10.3

@@ -42,7 +42,7 @@ describe 'lsys_postgresql' do
       else
         it {
           is_expected.to contain_package('postgresql-server')
-            .with_ensure(%r{^16\.2})
+            .with_ensure(%r{^16\.6})
         }
       end
     end
