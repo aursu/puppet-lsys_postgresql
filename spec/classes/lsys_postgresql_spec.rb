@@ -9,6 +9,24 @@ describe 'lsys_postgresql' do
 
       it { is_expected.to compile.with_all_deps }
 
+      it {
+        is_expected.to contain_class('postgresql::server')
+          .with_listen_addresses('localhost')
+      }
+
+      context 'with multiple listen addresses' do
+        let(:params) do
+          {
+            listen_addresses: ['localhost', '10.10.10.1'],
+          }
+        end
+
+        it {
+          is_expected.to contain_class('postgresql::server')
+            .with_listen_addresses('localhost,10.10.10.1')
+        }
+      end
+
       case os
       when %r{^centos-8}, %r{^rocky}
         it {

@@ -78,7 +78,7 @@ All notable changes to this project will be documented in this file.
 
 **Known Issues**
 
-## Release 0.52.1
+## Release 0.52.2
 
 **Features**
 
@@ -88,6 +88,7 @@ All notable changes to this project will be documented in this file.
 **Bugfixes**
 
 * Updated PostgreSQL version to 16.6 for Ubuntu
+* Pass to `postgresql::server` only string as `listen_addresses`
 
 **Known Issues**
 

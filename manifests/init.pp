@@ -138,10 +138,15 @@ class lsys_postgresql (
     default: {}
   }
 
+  $listen_addresses_string = $listen_addresses ? {
+    Array[Lsys_postgresql::PGAddress] => join($listen_addresses, ','),
+    default => $listen_addresses,
+  }
+
   class { 'postgresql::server':
     package_ensure          => $package_version,
     ip_mask_allow_all_users => $ip_mask_allow_all_users,
-    listen_addresses        => $listen_addresses,
+    listen_addresses        => $listen_addresses_string,
     port                    => $database_port + 0,
   }
   contain postgresql::server
