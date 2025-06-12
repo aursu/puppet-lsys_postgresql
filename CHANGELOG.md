@@ -94,12 +94,14 @@ All notable changes to this project will be documented in this file.
 
 * No known issues in this release.
 
-## Release 0.53.0
+## Release 0.53.1
 
 **Features**
 
+* Updated PostgreSQL version for CentOS, Rocky and Rocky Linux
+
 **Bugfixes**
 
-* Updated PostgreSQL version for CentOS, Rocky and Rocky Linux
+* Bugfix for Debian based systems in case of disabled repo mgmt
 
 **Known Issues**

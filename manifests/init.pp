@@ -133,7 +133,9 @@ class lsys_postgresql (
       }
     }
     'Debian': {
-      Class['postgresql::repo::apt_postgresql_org'] ~> Class['bsys::repo']
+      if $manage_package_repo {
+        Class['postgresql::repo::apt_postgresql_org'] ~> Class['bsys::repo']
+      }
     }
     default: {}
   }
