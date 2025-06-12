@@ -12,8 +12,14 @@ class lsys_postgresql::params {
 
   case $osname {
     'CentOS': {
-      $postgres_version = '16.8'
-      $postgres_manage_repo = false
+      if $osmaj == '7' {
+        $postgres_version = '15.8'
+        $postgres_manage_repo = true
+      }
+      else {
+        $postgres_version = '16.8'
+        $postgres_manage_repo = false
+      }
     }
     'Rocky': {
       $postgres_version = '16.8'
