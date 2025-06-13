@@ -43,7 +43,7 @@ describe 'lsys_postgresql' do
 
         it {
           is_expected.to contain_package('postgresql-server')
-            .with_ensure('15.7')
+            .with_ensure('15.13')
             .with_name('postgresql15-server')
         }
 
