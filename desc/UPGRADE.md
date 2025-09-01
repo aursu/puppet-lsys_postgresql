@@ -49,10 +49,25 @@ PostgreSQL 15 introduces several new features and improvements over version 13:
 ```bash
 # Check current PostgreSQL version
 psql -c "SELECT version();"
+                                                    version
+---------------------------------------------------------------------------------------------------------------
+ PostgreSQL 13.20 on x86_64-redhat-linux-gnu, compiled by gcc (GCC) 11.5.0 20240719 (Red Hat 11.5.0-5), 64-bit
+(1 row)
+```
 
+```
 # Check database sizes
 psql -c "SELECT datname, pg_size_pretty(pg_database_size(datname)) FROM pg_database;"
+       datname       | pg_size_pretty
+---------------------+----------------
+ postgres            | 7949 kB
+ template1           | 7777 kB
+ template0           | 7777 kB
+ gitlabhq_production | 419 MB
+(4 rows)
+```
 
+```
 # Check for deprecated features
 psql -c "SELECT * FROM pg_settings WHERE name LIKE '%deprecated%';"
 ```
@@ -73,10 +88,8 @@ done
 
 ```bash
 # Backup configuration files
-cp -r /var/lib/pgsql/13/data/ /backup/pg13_config_backup/
-cp /var/lib/pgsql/13/data/postgresql.conf /backup/
-cp /var/lib/pgsql/13/data/pg_hba.conf /backup/
-cp /var/lib/pgsql/13/data/pg_ident.conf /backup/
+cp -a /var/lib/pgsql/data /backup/
+cp /var/lib/pgsql/data/*.conf /backup/
 ```
 
 ### 4. Extension Compatibility Check
@@ -118,7 +131,7 @@ apt-get install postgresql-15 postgresql-client-15
 ```bash
 systemctl stop postgresql-13
 # or
-/usr/pgsql-13/bin/pg_ctl -D /var/lib/pgsql/13/data stop
+/usr/pgsql-13/bin/pg_ctl -D /var/lib/pgsql/data stop
 ```
 
 #### 3. Initialize PostgreSQL 15 Data Directory
@@ -133,9 +146,9 @@ systemctl stop postgresql-13
 
 ```bash
 /usr/pgsql-15/bin/pg_upgrade \
-    --old-bindir=/usr/pgsql-13/bin \
+    --old-bindir=/usr/bin \
     --new-bindir=/usr/pgsql-15/bin \
-    --old-datadir=/var/lib/pgsql/13/data \
+    --old-datadir=/var/lib/pgsql/data \
     --new-datadir=/var/lib/pgsql/15/data \
     --check
 ```
@@ -144,9 +157,9 @@ systemctl stop postgresql-13
 
 ```bash
 /usr/pgsql-15/bin/pg_upgrade \
-    --old-bindir=/usr/pgsql-13/bin \
+    --old-bindir=/usr/bin \
     --new-bindir=/usr/pgsql-15/bin \
-    --old-datadir=/var/lib/pgsql/13/data \
+    --old-datadir=/var/lib/pgsql/data \
     --new-datadir=/var/lib/pgsql/15/data \
     --verbose \
     --retain
@@ -162,7 +175,7 @@ systemctl disable postgresql-13
 systemctl enable postgresql-15
 
 # Update default data directory
-sed -i 's|/var/lib/pgsql/13/data|/var/lib/pgsql/15/data|g' /etc/systemd/system/postgresql.service
+sed -i 's|/var/lib/pgsql/data|/var/lib/pgsql/15/data|g' /etc/systemd/system/postgresql.service
 systemctl daemon-reload
 ```
 
@@ -197,7 +210,7 @@ psql -c "SELECT * FROM information_schema.tables WHERE table_schema = 'public';"
 psql -c "VACUUM ANALYZE;"
 
 # Update planner statistics
-/var/lib/pgsql/15/analyze_new_cluster.sh
+/usr/pgsql-15/bin/vacuumdb --all --analyze-in-stages
 ```
 
 ### 3. Update Extensions
@@ -208,12 +221,18 @@ psql -c "VACUUM ANALYZE;"
 ALTER EXTENSION extension_name UPDATE;
 ```
 
+using command:
+
+```
+/usr/pgsql-15/bin/psql -U postgres -d gitlabhq_production -f update_extensions.sql
+```
+
 ### 4. Configuration Migration
 
 ```bash
 # Compare and merge configuration changes
-diff /backup/postgresql.conf /var/lib/pgsql/15/data/postgresql.conf
-diff /backup/pg_hba.conf /var/lib/pgsql/15/data/pg_hba.conf
+diff backups/postgresql.conf /var/lib/pgsql/15/data/postgresql.conf
+diff backups/pg_hba.conf /var/lib/pgsql/15/data/pg_hba.conf
 ```
 
 ### 5. Performance Tuning
@@ -347,9 +366,9 @@ ANALYZE;
 CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
 
 -- Monitor upgrade impact
-SELECT query, calls, total_time, mean_time 
-FROM pg_stat_statements 
-ORDER BY total_time DESC 
+SELECT query, calls, total_time, mean_time
+FROM pg_stat_statements
+ORDER BY total_time DESC
 LIMIT 10;
 ```
 
