@@ -1,10 +1,6 @@
 # lsys_postgresql
 
-Welcome to your new module. A short overview of the generated parts can be found
-in the [PDK documentation][1].
-
-The README template below provides a starting point with details about what
-information to include in your README.
+A Puppet module for installing and configuring PostgreSQL server with intelligent OS-specific defaults and repository management.
 
 ## Table of Contents
 
@@ -14,104 +10,244 @@ information to include in your README.
     * [Setup requirements](#setup-requirements)
     * [Beginning with lsys_postgresql](#beginning-with-lsys_postgresql)
 1. [Usage - Configuration options and additional functionality](#usage)
+1. [Reference](#reference)
 1. [Limitations - OS compatibility, etc.](#limitations)
 1. [Development - Guide for contributing to the module](#development)
 
 ## Description
 
-Briefly tell users why they might want to use your module. Explain what your
-module does and what kind of problems users can solve with it.
+This module provides a streamlined way to install and configure PostgreSQL server across different Linux distributions. It wraps the `puppetlabs/postgresql` module with intelligent defaults and handles OS-specific repository management, version selection, and configuration.
 
-This should be a fairly short description helps the user decide if your module
-is what they want.
+**Key Features:**
+- **OS-aware version management**: Automatically selects appropriate PostgreSQL versions for different operating systems
+- **Repository management**: Handles PostgreSQL official repositories with proper GPG keys and SSL verification
+- **DNF module support**: Manages DNF module streams on RHEL/CentOS 8+ systems
+- **Network configuration**: Simplifies PostgreSQL network access configuration
+- **Contrib packages**: Automatically installs PostgreSQL contrib extensions
 
 ## Setup
 
-### What lsys_postgresql affects **OPTIONAL**
+### What lsys_postgresql affects
 
-If it's obvious what your module touches, you can skip this section. For
-example, folks can probably figure out that your mysql_instance module affects
-their MySQL instances.
+This module manages:
 
-If there's more that they should know about, though, this is the place to
-mention:
+* **Packages**: PostgreSQL server, client, and contrib packages
+* **Services**: PostgreSQL service (postgresql/postgresql-X)  
+* **Configuration files**: 
+  - `/var/lib/pgsql/X/data/postgresql.conf`
+  - `/var/lib/pgsql/X/data/pg_hba.conf`
+* **Repositories**: 
+  - PostgreSQL official APT/YUM repositories
+  - EPEL repository (on RHEL/CentOS systems)
+  - DNF module streams (on RHEL/CentOS 8+)
+* **Repository files**:
+  - `/etc/yum.repos.d/yum.postgresql.org.repo`
+  - `/etc/yum.repos.d/pgdg-common.repo`
+* **GPG keys**: PostgreSQL repository signing keys
 
-* Files, packages, services, or operations that the module will alter, impact,
-  or execute.
-* Dependencies that your module automatically installs.
-* Warnings or other important notices.
+### Setup Requirements
 
-### Setup Requirements **OPTIONAL**
+**Dependencies:**
+- `puppetlabs/postgresql` (>= 10.0.0 < 11.0.0)
+- `aursu/bsys` (>= 0.11.3 < 1.0.0) - provides OS detection and repository management
+- `puppetlabs/stdlib` (>= 8.6.0 < 10.0.0)
 
-If your module requires anything extra before setting up (pluginsync enabled,
-another module, etc.), mention it here.
-
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you might want to include an additional "Upgrading" section here.
+**System Requirements:**
+- Puppet >= 5.5.0
+- Supported operating systems (see Limitations section)
 
 ### Beginning with lsys_postgresql
 
-The very basic steps needed for a user to get the module up and running. This
-can include setup steps, if necessary, or it can be an example of the most basic
-use of the module.
+The simplest way to use this module is to include the main class:
+
+```puppet
+include lsys_postgresql
+```
+
+This will:
+- Install PostgreSQL with OS-appropriate version
+- Configure PostgreSQL to listen on localhost only
+- Set up basic authentication
+- Install contrib packages
 
 ## Usage
 
-Include usage examples for common use cases in the **Usage** section. Show your
-users how to use your module to solve problems, and be sure to include code
-examples. Include three to five examples of the most important or common tasks a
-user can accomplish with your module. Show users how to accomplish more complex
-tasks that involve different types, classes, and functions working in tandem.
+### Basic Usage
+
+Install PostgreSQL with default settings:
+```puppet
+include lsys_postgresql
+```
+
+### Custom Network Configuration
+
+Allow remote connections from specific networks:
+```puppet
+class { 'lsys_postgresql':
+  ip_mask_allow_all_users => '192.168.1.0/24',
+  listen_addresses        => ['localhost', '192.168.1.100'],
+  database_port          => 5432,
+}
+```
+
+### Disable Repository Management
+
+Use system packages instead of PostgreSQL official repositories:
+```puppet
+class { 'lsys_postgresql':
+  manage_package_repo => false,
+  package_version     => undef,
+}
+```
+
+### Specific Version Installation
+
+Install a specific PostgreSQL version:
+```puppet
+class { 'lsys_postgresql':
+  package_version => '15.13',  # On CentOS 7
+  # or
+  package_version => '16.9-1.pgdg22+1',  # On Ubuntu 22.04
+}
+```
+
+### SSL Repository Configuration
+
+Configure repository SSL verification:
+```puppet
+class { 'lsys_postgresql':
+  repo_sslverify => 0,  # Disable SSL verification
+}
+```
 
 ## Reference
 
-This section is deprecated. Instead, add reference information to your code as
-Puppet Strings comments, and then use Strings to generate a REFERENCE.md in your
-module. For details on how to add code comments and generate documentation with
-Strings, see the [Puppet Strings documentation][2] and [style guide][3].
+### Classes
 
-If you aren't ready to use Strings yet, manually create a REFERENCE.md in the
-root of your module directory and list out each of your module's classes,
-defined types, facts, functions, Puppet tasks, task plans, and resource types
-and providers, along with the parameters for each.
+#### `lsys_postgresql`
 
-For each element (class, defined type, function, and so on), list:
+Main class for PostgreSQL installation and configuration.
 
-* The data type, if applicable.
-* A description of what the element does.
-* Valid values, if the data type doesn't make it obvious.
-* Default value, if any.
+**Parameters:**
 
-For example:
+##### `manage_dnf_module`
+- **Type**: `Boolean`
+- **Default**: `true`
+- **Description**: Whether to manage DNF module streams on RHEL/CentOS 8+ systems
 
-```
-### `pet::cat`
+##### `manage_package_repo`
+- **Type**: `Boolean`  
+- **Default**: OS-dependent (see lsys_postgresql::params)
+- **Description**: Whether to manage PostgreSQL official repositories
 
-#### Parameters
+##### `package_version`
+- **Type**: `Optional[Bsys::PGVersion]`
+- **Default**: OS-dependent (see lsys_postgresql::params)
+- **Description**: Specific PostgreSQL version to install
 
-##### `meow`
+##### `ip_mask_allow_all_users`
+- **Type**: `String`
+- **Default**: `'0.0.0.0/0'`
+- **Description**: IP mask for allowing remote database connections in pg_hba.conf
 
-Enables vocalization in your cat. Valid options: 'string'.
+##### `listen_addresses`  
+- **Type**: `Lsys_postgresql::PGListen`
+- **Default**: `'localhost'`
+- **Description**: TCP/IP addresses for PostgreSQL to listen on. Can be string or array of addresses
 
-Default: 'medium-loud'.
-```
+##### `database_port`
+- **Type**: `Variant[Integer, Pattern[/^[0-9]+$/]]`
+- **Default**: `5432`
+- **Description**: PostgreSQL server port number
+
+##### `repo_sslverify`
+- **Type**: `Optional[Integer[0,1]]`
+- **Default**: `undef`
+- **Description**: SSL verification setting for PostgreSQL repositories (0=disabled, 1=enabled)
+
+#### `lsys_postgresql::params`
+
+Parameter class containing OS-specific defaults.
+
+### Custom Types
+
+#### `Lsys_postgresql::PGAddress`
+Valid PostgreSQL address types: IP addresses, hostnames, or special values ('0.0.0.0', '::', '*').
+
+#### `Lsys_postgresql::PGListen`  
+PostgreSQL listen address configuration: single address or array of addresses.
+
+### Default Versions by OS
+
+| Operating System | PostgreSQL Version | Repository Management |
+|------------------|-------------------|----------------------|
+| CentOS 7         | 15.13            | Enabled              |
+| CentOS 8+        | 16.8             | Disabled (DNF module)|
+| Rocky Linux      | 16.8             | Disabled (DNF module)|
+| Ubuntu           | 16.9-1.pgdg{version}+1 | Enabled      |
 
 ## Limitations
 
-In the Limitations section, list any incompatibilities, known issues, or other
-warnings.
+### Supported Operating Systems
+
+- **Rocky Linux**: 8, 9
+- **Ubuntu**: 20.04, 22.04, 24.04
+- **CentOS**: 7 (deprecated but supported)
+
+### Known Issues
+
+- **CentOS/RHEL 8+**: Due to modular filtering issues with maintainer repositories, this module uses DNF module streams instead of PostgreSQL.org repositories by default
+- **SSL Certificates**: Some corporate environments may require `repo_sslverify => 0` due to certificate chain issues
+- **Version Constraints**: PostgreSQL versions are OS-specific and tested combinations. Using custom versions may require additional configuration
+
+### Dependencies
+
+This module requires the `aursu/bsys` module for OS detection and repository management. Ensure this dependency is available in your Puppet environment.
 
 ## Development
 
-In the Development section, tell other users the ground rules for contributing
-to your project and how they should submit their work.
+This module follows standard Puppet development practices:
 
-## Release Notes/Contributors/Etc. **Optional**
+1. **Testing**: Use PDK for linting, syntax checking, and unit tests
+   ```bash
+   pdk validate
+   pdk test unit
+   ```
 
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You can also add any additional sections you feel are
-necessary or important to include here. Please use the `##` header.
+2. **Contributions**: 
+   - Fork the repository
+   - Create feature branches  
+   - Submit pull requests with tests
+   - Follow existing code style
 
-[1]: https://puppet.com/docs/pdk/latest/pdk_generating_modules.html
-[2]: https://puppet.com/docs/puppet/latest/puppet_strings.html
-[3]: https://puppet.com/docs/puppet/latest/puppet_strings_style.html
+3. **Issues**: Report bugs and feature requests at the [GitHub Issues](https://github.com/aursu/puppet-lsys_postgresql/issues) page
+
+### Development Environment
+
+```bash
+# Install PDK
+# Clone repository
+git clone https://github.com/aursu/puppet-lsys_postgresql.git
+cd puppet-lsys_postgresql
+
+# Install dependencies
+pdk bundle install
+
+# Run tests
+pdk test unit
+pdk validate
+```
+
+## Release Notes
+
+See [CHANGELOG.md](CHANGELOG.md) for detailed release notes and version history.
+
+## License
+
+This module is licensed under the Apache License, Version 2.0.
+
+## Links
+
+- **Source Code**: https://github.com/aursu/puppet-lsys_postgresql
+- **Issues**: https://github.com/aursu/puppet-lsys_postgresql/issues
+- **Puppet Forge**: https://forge.puppet.com/modules/aursu/lsys_postgresql
