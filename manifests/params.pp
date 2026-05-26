@@ -22,11 +22,11 @@ class lsys_postgresql::params {
       }
     }
     'Rocky': {
-      $postgres_version = '16.8'
+      $postgres_version = '16.13'
       $postgres_manage_repo = false
     }
     'Ubuntu': {
-      $postgres_version = "16.9-1.pgdg${osmaj}+1"
+      $postgres_version = "16.14-1.pgdg${osmaj}+1"
       $postgres_manage_repo = true
     }
     default: {

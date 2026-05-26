@@ -1,6 +1,6 @@
 {
   "name": "aursu-lsys_postgresql",
-  "version": "0.53.1",
+  "version": "0.53.2",
   "author": "aursu",
   "summary": "PostgreSQL installation",
   "license": "Apache-2.0",

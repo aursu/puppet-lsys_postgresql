@@ -105,3 +105,14 @@ All notable changes to this project will be documented in this file.
 * Bugfix for Debian based systems in case of disabled repo mgmt
 
 **Known Issues**
+
+## Release 0.53.2
+
+**Features**
+
+**Bugfixes**
+
+* Updated PostgreSQL version to 16.13 for Rocky Linux
+* Updated PostgreSQL version to 16.14 for Ubuntu
+
+**Known Issues**
