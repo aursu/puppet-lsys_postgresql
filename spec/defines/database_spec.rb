@@ -18,6 +18,7 @@ describe 'lsys_postgresql::database' do
         it {
           is_expected.to contain_postgresql__server__db('app')
             .with_user('app')
+            .with_owner('app')
         }
 
         it { is_expected.to contain_postgresql__server__role('app') }
@@ -49,6 +50,7 @@ describe 'lsys_postgresql::database' do
         it {
           is_expected.to contain_postgresql__server__db('app')
             .with_user('app_rw')
+            .with_owner('app_rw')
         }
 
         it { is_expected.to contain_postgresql__server__pg_hba_rule('app: app_rw from 127.0.0.1/32') }

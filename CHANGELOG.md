@@ -138,3 +138,17 @@ All notable changes to this project will be documented in this file.
 * Tested against puppetlabs-postgresql 10.8.0.
 
 **Known Issues**
+
+## Release 0.54.1
+
+**Features**
+
+**Bugfixes**
+
+* `lsys_postgresql::database`: the login role now **owns** the database
+  (`owner => $user`). On PostgreSQL 15 and later only the owner may create
+  objects in the `public` schema, so with 0.54.0 an application failed on its
+  first migration with "permission denied for schema public". An existing
+  database is handed over by `ALTER DATABASE ... OWNER TO`.
+
+**Known Issues**

@@ -60,8 +60,13 @@ define lsys_postgresql::database (
     default   => Sensitive($password),
   }
 
+  # The role owns the database: since PostgreSQL 15 only the database owner may
+  # create objects in the `public` schema (GRANT ALL on the database is not
+  # enough). For an existing database puppetlabs-postgresql runs ALTER DATABASE
+  # ... OWNER TO.
   postgresql::server::db { $dbname:
     user     => $user,
+    owner    => $user,
     password => $_password,
     encoding => $encoding,
     locale   => $locale,
