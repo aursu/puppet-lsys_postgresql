@@ -120,6 +120,36 @@ class { 'lsys_postgresql':
 }
 ```
 
+### A database for an application
+
+Role, database and one explicit pg_hba line per client address (default
+`127.0.0.1/32`, scram-sha-256), ordered before the generic rules:
+
+```puppet
+include lsys_postgresql
+
+lsys_postgresql::database { 'app':
+  password => Sensitive('secret'),
+}
+```
+
+### Backing up a database with restic
+
+`pg_dump` runs as `postgres` over the local socket (peer authentication, no
+password) and streams into a restic repository you declare yourself:
+
+```puppet
+restic::repository { 'postgres':
+  repository => '/var/backups/restic/postgres',
+  password   => Sensitive('secret'),
+}
+
+lsys_postgresql::backup { 'app':
+  repository => 'postgres',
+  minute     => '47',
+}
+```
+
 ## Reference
 
 ### Classes
@@ -169,6 +199,21 @@ Main class for PostgreSQL installation and configuration.
 
 Parameter class containing OS-specific defaults.
 
+### Defined Types
+
+#### `lsys_postgresql::database`
+
+A database with its own login role (password as Sensitive, hashed with the
+server's `password_encryption`) and explicit pg_hba `host` lines
+(`client_addresses`, `auth_method`, `hba_order` - default 50, before the
+generic rules 100/101). Needs the server declared on the node.
+
+#### `lsys_postgresql::backup`
+
+Scheduled `pg_dump` (custom format) of one database into a `restic::repository`,
+tagged with the database name; retention is scoped to that tag, so databases
+can share a repository. Schedule and retention as in `restic::job`.
+
 ### Custom Types
 
 #### `Lsys_postgresql::PGAddress`
@@ -183,8 +228,8 @@ PostgreSQL listen address configuration: single address or array of addresses.
 |------------------|-------------------|----------------------|
 | CentOS 7         | 15.13            | Enabled              |
 | CentOS 8+        | 16.8             | Disabled (DNF module)|
-| Rocky Linux      | 16.8             | Disabled (DNF module)|
-| Ubuntu           | 16.9-1.pgdg{version}+1 | Enabled      |
+| Rocky Linux      | 16.13            | Disabled (DNF module)|
+| Ubuntu           | 16.16-1.pgdg{version}+1 | Enabled      |
 
 ## Limitations
 
@@ -202,7 +247,7 @@ PostgreSQL listen address configuration: single address or array of addresses.
 
 ### Dependencies
 
-This module requires the `aursu/bsys` module for OS detection and repository management. Ensure this dependency is available in your Puppet environment.
+This module requires `aursu/bsys` (0.14.1 or later) for OS detection, repository management and the `Bsys::PGVersion` type, `puppetlabs/postgresql`, and `aursu/restic` for `lsys_postgresql::backup`.
 
 ## Development
 

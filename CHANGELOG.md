@@ -116,3 +116,25 @@ All notable changes to this project will be documented in this file.
 * Updated PostgreSQL version to 16.14 for Ubuntu
 
 **Known Issues**
+
+## Release 0.54.0
+
+**Features**
+
+* New defined type `lsys_postgresql::database`: a database with its own login
+  role (password passed on as Sensitive, hashed with the server's
+  `password_encryption`) and one explicit pg_hba `host` line per client
+  address, ordered (50) before the generic rules of `postgresql::server`.
+* New defined type `lsys_postgresql::backup`: scheduled `pg_dump` (custom
+  format) as `postgres` over the local socket, streamed into a
+  `restic::repository` through `restic::job`, tagged with the database name.
+  New dependency `aursu/restic`.
+* Default PostgreSQL version for Ubuntu is 16.16.
+
+**Bugfixes**
+
+* Requires `aursu/bsys` 0.14.1 or later: earlier `Bsys::PGVersion` rejected
+  PostgreSQL 18.7.
+* Tested against puppetlabs-postgresql 10.8.0.
+
+**Known Issues**

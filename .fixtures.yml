@@ -11,7 +11,7 @@ fixtures:
       ref: 9.0.2
     postgresql:
       repo: puppetlabs/postgresql
-      ref: 10.6.1
+      ref: 10.8.0
     stdlib:
       repo: puppetlabs/stdlib
       ref: 9.4.1
@@ -20,6 +20,15 @@ fixtures:
       ref: 5.2.0
     yumrepo_core:
       repo: puppetlabs/yumrepo_core
+    archive:
+      repo: puppet/archive
+      ref: 7.1.0
+    cron_core:
+      repo: puppetlabs/cron_core
+  repositories:
     bsys:
-      repo: aursu/bsys
-      ref: 0.11.3
+      repo: https://github.com/aursu/puppet-bsys.git
+      ref: v0.14.1
+    restic:
+      repo: https://github.com/aursu/puppet-restic.git
+      ref: v0.3.0
